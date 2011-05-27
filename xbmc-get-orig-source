@@ -33,6 +33,8 @@ Usage: xbmc-get-orig-source [OPTION]\n\
                              If not specified, master will be used\n\
  --stable                    Use stable naming convention and omit git revision\n\
                              TODO: Not yet implemented!\n\
+ --source-only               Only create the orig source tar.gz\n\
+                             Don't create the source package\n\
  --ppa-upload [HOST]         Perform PPA upload of the resulting source\n"
 
 # Loop that parses options passed to script
@@ -66,6 +68,10 @@ while [ "$#" -gt "0" ]; do
       ;;
     --stable)
       STABLE="1"
+      shift
+      ;;
+    --source-only)
+      SOURCE_ONLY="1"
       shift
       ;;
     --ppa-upload)
@@ -116,13 +122,6 @@ get_sources() {
 
 # This will prepare the sources to create a tarball from
 prepare_orig_tarball() {
-  pushd ${BUILDDIR} >/dev/null
-    ./bootstrap
-    if [ -z "$REMOVE_EXTERNAL" ]; then
-      curl -Ls --output lib/addons/script.module.pil/Imaging-1.1.7.tar.gz http://www.effbot.org/downloads/Imaging-1.1.7.tar.gz
-    fi
-  popd >/dev/null
-
   if [ ! -z "$REMOVE_NONFREE" ]; then
     # Remove non-free components
     echo "Removing non-free components"
@@ -170,6 +169,10 @@ create_tarball() {
 # than the version specified in <XBMC_VERSION>-<PPA_REVISION> and upload a
 # package for each supported Ubuntu suite if desired.
 create_source_packages() {
+  if [ ${SOURCE_ONLY} -eq 1 ]; then
+    return;
+  fi
+  echo "Performing PPA upload."
   cp -r ./debian "${BUILDDIR}"
   if [ -n "${DPUT_HOST}" ]; then
     echo "Performing PPA upload."

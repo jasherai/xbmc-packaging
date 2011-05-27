@@ -3,7 +3,7 @@ Section: video
 Priority: optional
 Maintainer: Team XBMC <team-xbmc@lists.launchpad.net>
 XSBC-Original-Maintainer: Team XBMC <team-xbmc@lists.launchpad.net>
-Uploaders: Andres Mejia <amejia@debian.org>
+Uploaders: Phatforge PPA <ppa@phatforge.com>
 DM-Upload-Allowed: yes
 Build-Depends: debhelper (>= 7.0.50~),
  python-support,
@@ -16,9 +16,10 @@ Build-Depends: debhelper (>= 7.0.50~),
  libboost-dev,
  zip,
  libtool,
+ libltdl-dev,
  libgles2-mesa-dev [armel] | libgl1-mesa-dev | libgl-dev,
  libglu1-mesa-dev | libglu-dev,
- libglew-dev,
+ libglew1.6-dev | libglew-dev,
  libmad0-dev,
  libjpeg-dev,
  libsamplerate-dev,
@@ -56,7 +57,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  gperf,
  nasm [!amd64],
  yasm,
- libcwiid-dev,
+ libcwiid-dev | libcwiid1-dev,
  libbluetooth-dev,
  zlib1g-dev,
  libsmbclient-dev,
@@ -78,6 +79,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  libva-dev,
  libplist-dev,
  libhal-storage-dev,
+ libbluray-dev,
  libudev-dev,
  libcec-dev,
  libafpclient-dev,
@@ -143,7 +145,6 @@ Package: xbmc-bin
 Architecture: i386 amd64 powerpc ppc64 armel
 Depends: ${shlibs:Depends},
          ${misc:Depends}
-Recommends: ${shlibs:Recommends}
 Provides: xbmc-common, xbmc-eventclients-wiiremote
 Replaces: xbmc-common, xbmc-eventclients-wiiremote
 Conflicts: xbmc-common, xbmc-eventclients-wiiremote
@@ -177,6 +178,7 @@ Depends: xbmc (= ${binary:Version}),
          sudo,
          whois,
          uxlaunch,
+         policykit-1,
          ${misc:Depends},
          ${shlibs:Depends},
 Conflicts: kdm, gdm, xdm, wdm

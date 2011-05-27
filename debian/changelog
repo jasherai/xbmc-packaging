@@ -1,3 +1,12 @@
+xbmc (2:11.0~git20110609.9ac7e4c-0ubuntu1) maverick; urgency=low
+
+  * Add missing dependencies [policykit-1] for xbmc-live build
+  * Add libbluray support into configure options
+  * Add bootstrap into the configure stage of debian/rules to support recipe builds
+  * Add support for adjusting the changelog version for recipe build  autoincrement
+
+ -- Pritesh Mehta <pritesh@phatforge.com>  Wed, 15 Jun 2011 03:37:33 +0100
+
 xbmc (2:11.0~git20110802.a8d22f6-1) experimental; urgency=low
 
   * Package XBMC for Debian. (Closes: #469397)

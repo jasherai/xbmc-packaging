@@ -13,9 +13,10 @@ BUILD_DEPENDS="debhelper (>= 7.0.50~),
  libboost-dev,
  zip,
  libtool,
+ libltdl-dev,
  libgles2-mesa-dev [armel] | libgl1-mesa-dev | libgl-dev,
  libglu1-mesa-dev | libglu-dev,
- libglew-dev,
+ libglew1.6-dev | libglew-dev,
  libmad0-dev,
  libjpeg-dev,
  libsamplerate-dev,
@@ -72,6 +73,7 @@ BUILD_DEPENDS="debhelper (>= 7.0.50~),
  fpc,
  libomxil-bellagio-dev [armel],
  python-imaging,
+ libva-dev,
  libplist-dev,
  libhal-storage-dev,
  libcec-dev (>= 1.1),
@@ -79,7 +81,8 @@ BUILD_DEPENDS="debhelper (>= 7.0.50~),
  libafpclient-dev,
  libshairport-dev,
  libnfs-dev,
- libltdl-dev,"
+ libltdl-dev,
+ libbluray-dev"
 
 if [ "$(lsb_release -is)" = "Debian" ]; then
 BUILD_DEPENDS="$BUILD_DEPENDS
@@ -104,12 +107,7 @@ if [ "$(lsb_release -is)" = "Debian" ]; then
 BUILD_DEPENDS="$BUILD_DEPENDS
  libva-dev,"
 else
-if [ "$(lsb_release -is)" = "Ubuntu" -a "${XBMC_UBUNTU_PPA_VERSION}" = "natty" ] ; then
-BUILD_DEPENDS="$BUILD_DEPENDS
- libbluray-dev,
- libva-dev,"
-fi
-if [ "$(lsb_release -is)" = "Ubuntu" -a "${XBMC_UBUNTU_PPA_VERSION}" = "oneiric" ] ; then
+if [ "$(lsb_release -is)" = "Ubuntu" -a "$(lsb_release -rs|tr -d .)" -ge 1104 ] ; then
 BUILD_DEPENDS="$BUILD_DEPENDS
  libbluray-dev,
  libva-dev,"
@@ -120,6 +118,11 @@ case "$1" in
     BUILD_DEPENDS)
         printf "$BUILD_DEPENDS"
         ;;
+    LIBCURL_DEPENDS)
+        LIBCURL_DEPENDS=$(cat /var/lib/dpkg/info/libcurl3-gnutls.shlibs | \
+          sed 's/^[^[:space:]]\+\?[[:space:]]\+\?[^[:space:]]\+\?[[:space:]]\+\?\(.*\)$/\1/')
+        printf "$LIBCURL_DEPENDS"
+        ;;
     XBMC_LIVE_DEPENDS)
         XBMC_LIVE_DEPENDS="xbmc (= \${binary:Version}),
          openssh-server,
@@ -128,22 +131,37 @@ case "$1" in
          adduser,
          sudo,
          whois,
+         uxlaunch,
          \${misc:Depends},
          \${shlibs:Depends},"
         if [ $(lsb_release -cs) = "lucid" ]; then
             XBMC_LIVE_DEPENDS="$XBMC_LIVE_DEPENDS
          mkpasswd,"
         fi
-        if [ $(lsb_release -cs) = "natty" ]; then
-            XBMC_LIVE_DEPENDS="$XBMC_LIVE_DEPENDS
-         uxlaunch,"
-        fi
-        if [ $(lsb_release -cs) = "oneiric" ]; then
-            XBMC_LIVE_DEPENDS="$XBMC_LIVE_DEPENDS
-         lightdm,"
-        fi
 
         printf "$XBMC_LIVE_DEPENDS"
+        ;;
+    LIBVDPAU_DEPENDS)
+        LIBVDPAU_DEPENDS=""
+        if [ -r /var/lib/dpkg/info/libvdpau*.shlibs ]; then
+          LIBVDPAU_DEPENDS=$(cat /var/lib/dpkg/info/libvdpau*.shlibs | \
+          grep 'libvdpau ' | \
+          sed 's/^[^[:space:]]\+\?[[:space:]]\+\?[^[:space:]]\+\?[[:space:]]\+\?\(.*\)$/\1/')
+        elif [ -r /var/lib/dpkg/info/nvidia-185-libvdpau.shlibs ]; then
+          LIBVDPAU_DEPENDS=$(cat /var/lib/dpkg/info/nvidia-185-libvdpau.shlibs | \
+          grep 'libvdpau ' | \
+          sed 's/^[^[:space:]]\+\?[[:space:]]\+\?[^[:space:]]\+\?[[:space:]]\+\?\(.*\)$/\1/')
+        fi
+        if [ -z $LIBVDPAU_DEPENDS ]; then
+          echo "Error in getting shlibs information for libvdpau."
+          exit 1
+        fi
+        printf "$LIBVDPAU_DEPENDS"
+        ;;
+    LIBRTMP_DEPENDS)
+        LIBRTMP_DEPENDS=$(cat /var/lib/dpkg/info/librtmp0.shlibs | \
+          sed 's/^[^[:space:]]\+\?[[:space:]]\+\?[^[:space:]]\+\?[[:space:]]\+\?\(.*\)$/\1/')
+        printf "$LIBRTMP_DEPENDS"
         ;;
 esac
 

@@ -3,7 +3,7 @@ Section: video
 Priority: optional
 Maintainer: Team XBMC <team-xbmc@lists.launchpad.net>
 XSBC-Original-Maintainer: Team XBMC <team-xbmc@lists.launchpad.net>
-Uploaders: Andres Mejia <amejia@debian.org>
+Uploaders: Phatforge PPA <ppa@phatforge.com>
 DM-Upload-Allowed: yes
 Build-Depends: #BUILD_DEPENDS#
 Standards-Version: 3.9.2

@@ -157,7 +157,7 @@ Description: XBMC Media Center (Event Client Dev package)
 
 Package: xbmc-eventclients-wiiremote
 Architecture: i386 amd64 powerpc ppc64 armel
-Depends: xbmc-eventclients-common (= ${source:Version}),
+Depends: xbmc-eventclients-common (= ${binary:Version}),
          ${shlibs:Depends},
          ${misc:Depends}
 Description: XBMC Media Center (Event Client WII Remote support package)

@@ -10,13 +10,16 @@ OPERATION=$2
 DISTRIBUTION=$1
 PROCEED=false
 
-MIRRORLIST="deb http://ppa.launchpad.net/team-xbmc/ppa/ubuntu $DISTRIBUTION main|\
-deb http://security.ubuntu.com/ubuntu $DISTRIBUTION-security main restricted universe multiverse|\
+MIRRORLIST="deb http://security.ubuntu.com/ubuntu $DISTRIBUTION-security main restricted universe multiverse|\
 deb http://archive.ubuntu.com/ubuntu/ $DISTRIBUTION-backports main restricted universe multiverse|\
 deb http://archive.ubuntu.com/ubuntu/ $DISTRIBUTION-updates main restricted universe multiverse"
 
-if [ "$DISTRIBUTION" != "maverick" ]; then
+if [ "$DISTRIBUTION" != "maverick" -a "$DISTRIBUTION" != "natty" -a "$DISTRIBUTION" != "oneiric" ]; then
     MIRRORLIST="$MIRRORLIST|deb http://ppa.launchpad.net/nvidia-vdpau/ppa/ubuntu $DISTRIBUTION main"
+fi
+
+if [ "$DISTRIBUTION" != "oneiric" ]; then
+    MIRRORLIST="deb http://ppa.launchpad.net/team-xbmc/ppa/ubuntu $DISTRIBUTION main|${MIRRORLIST}"
 fi
 
 if [ -z $PBUILDER_XBMC_BASE_DIR ] ; then

@@ -103,7 +103,7 @@ get_sources() {
     git clone --no-checkout "${XBMC_GIT_URL}" "${XBMC_SOURCE}"
   fi
 
-  GIT_REV_DATE=$(GIT_DIR="${XBMC_SOURCE}/.git" git log --abbrev=7 -1 --pretty=format:"%h %ci" ${REVISION} | awk '{gsub("-", "");print $2"."$1}')
+  GIT_REV_DATE=$(GIT_DIR="${XBMC_SOURCE}/.git" git log --abbrev=7 -1 --pretty=format:"%h %ci" ${REVISION} | awk '{gsub("-|:", "");print $2$3"."$1}')
   if [ "$STABLE" = "1" ]; then
     XBMC_VERSION="${XBMC_MAJOR_VERSION}"
   else

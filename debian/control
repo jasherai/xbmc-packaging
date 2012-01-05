@@ -16,10 +16,9 @@ Build-Depends: debhelper (>= 7.0.50~),
  libboost-dev,
  zip,
  libtool,
- libltdl-dev,
  libgles2-mesa-dev [armel] | libgl1-mesa-dev | libgl-dev,
  libglu1-mesa-dev | libglu-dev,
- libglew1.6-dev | libglew-dev,
+ libglew-dev,
  libmad0-dev,
  libjpeg-dev,
  libsamplerate-dev,
@@ -57,7 +56,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  gperf,
  nasm [!amd64],
  yasm,
- libcwiid-dev | libcwiid1-dev,
+ libcwiid-dev,
  libbluetooth-dev,
  zlib1g-dev,
  libsmbclient-dev,
@@ -76,22 +75,20 @@ Build-Depends: debhelper (>= 7.0.50~),
  fpc,
  libomxil-bellagio-dev [armel],
  python-imaging,
- libva-dev,
  libplist-dev,
  libhal-storage-dev,
- libbluray-dev,
+ libcec-dev (>= 1.1),
  libudev-dev,
- libcec-dev,
  libafpclient-dev,
  libshairport-dev,
  libnfs-dev,
  libltdl-dev,
- libavcodec-dev (>= 4:0.7),
- libavfilter-dev (>= 4:0.7),
- libavformat-dev (>= 4:0.7),
- libavutil-dev (>= 4:0.7),
- libpostproc-dev (>= 4:0.7),
- libswscale-dev (>= 4:0.7),
+ libavcodec-dev,
+ libavfilter-dev,
+ libavformat-dev,
+ libavutil-dev,
+ libpostproc-dev,
+ libswscale-dev,
 Standards-Version: 3.9.2
 Homepage: http://xbmc.org/
 Vcs-Git: git://github.com/xbmc/xbmc-packaging.git
@@ -145,6 +142,7 @@ Package: xbmc-bin
 Architecture: i386 amd64 powerpc ppc64 armel
 Depends: ${shlibs:Depends},
          ${misc:Depends}
+Recommends: ${shlibs:Recommends}
 Provides: xbmc-common, xbmc-eventclients-wiiremote
 Replaces: xbmc-common, xbmc-eventclients-wiiremote
 Conflicts: xbmc-common, xbmc-eventclients-wiiremote
@@ -177,7 +175,6 @@ Depends: xbmc (= ${binary:Version}),
          adduser,
          sudo,
          whois,
-         uxlaunch,
          policykit-1,
          ${misc:Depends},
          ${shlibs:Depends},
@@ -252,7 +249,7 @@ Description: XBMC Media Center (Event Client Dev package)
 
 Package: xbmc-eventclients-wiiremote
 Architecture: i386 amd64 powerpc ppc64 armel
-Depends: xbmc-eventclients-common (= ${source:Version}),
+Depends: xbmc-eventclients-common (= ${binary:Version}),
          ${shlibs:Depends},
          ${misc:Depends}
 Description: XBMC Media Center (Event Client WII Remote support package)
